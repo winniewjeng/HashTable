@@ -15,8 +15,8 @@
 
 using namespace std;
 
-class hash {
-    private:
+class HashTable {
+private:
     static const int table_size = 1000;
     
     struct node {
@@ -27,19 +27,19 @@ class hash {
     
     // hash table is an array with table size amount of bucket (index)
     // each bucket has a pointer that can point to an item
-    node* HashTable[table_size];
+    node* table[table_size];
     
     
-    public:
+public:
     
-    hash() {
+    HashTable() {
         for (int i = 0; i < table_size; i++) {
             // create new node for each index of hash table
-            HashTable[i] = new node;
+            table[i] = new node;
             // initialize each node
-            HashTable[i]->first_name = "empty";
-            HashTable[i]->last_name = "empty";
-            HashTable[i]->next = nullptr;
+            table[i]->first_name = "empty";
+            table[i]->last_name = "empty";
+            table[i]->next = nullptr;
         }
     }
     
@@ -63,11 +63,11 @@ class hash {
         // bucket hold location in hash table where i can store the name
         // calls hash function to assign it a location
         int bucket = Hash(first_name);
-        
+        // cout << "b: " <<bucket;
         // if hashtable is empty at index bucket, assign the arguements there
-        if(HashTable[bucket]->first_name == "empty") {
-            HashTable[bucket]->first_name = first_name;
-            HashTable[bucket]->last_name = last_name;
+        if(table[bucket]->first_name == "empty") {
+            table[bucket]->first_name = first_name;
+            table[bucket]->last_name = last_name;
         }
         // if hashtable is occupied at index bucket, create linked list chaining
         else {
@@ -77,7 +77,7 @@ class hash {
             new_node->next = nullptr;
             
             // get a walker at the top bucket of the HashTable
-            node* walker = HashTable[bucket];
+            node* walker = table[bucket];
             // traverse walker down the HashTable
             while (walker!=nullptr) {
                 walker = walker->next;
@@ -85,9 +85,38 @@ class hash {
             // "chain" the new_node to the end of the linked list
             walker->next = new_node;
         }
+    }
+    
+    int countItemsInBucket(int bucket) {
         
+        int count = 0;
+        // no item is in bucket
+        if (table[bucket]->first_name == "empty") {
+            return count;
+        }
+        // count the number of items chained to bucket
+        else {
+            node* walker = table[bucket];
+            
+            while(walker!=nullptr){
+                count++;
+                walker = walker->next;
+            }
+        }
+        return count;
+    }
+    
+    void print() {
+        int chainedNums;
+        
+        for (int i = 0; i < table_size; i ++) {
+            chainedNums = countItemsInBucket(i);
+            cout << "----------------------\n";
+            cout << table[i]->first_name << endl;
+            cout << table[i]->last_name << endl;
+            cout << "----------------------\n";
+        }
     }
 };
-
 
 #endif /* HashTable_hpp */

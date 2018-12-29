@@ -15,8 +15,14 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-    Hash hash;
+    HashTable h;
+    // int index;
+    // index = h.Hash("Winnie");
+    h.addItem("Hector", "Achilles");
     
+    cout << h.countItemsInBucket(2) << endl;
+    cout << h.countItemsInBucket(13) << endl;
+    h.print();
     
     return 0;
 }
