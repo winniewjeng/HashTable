@@ -9,11 +9,14 @@
 #include <iostream>
 #include <iostream>
 #include <string>
+#include "HashTable.hpp"
 
 using namespace std;
 
 int main(int argc, const char * argv[]) {
     
-
+    Hash hash;
+    
+    
     return 0;
 }
