@@ -17,7 +17,7 @@ using namespace std;
 
 class HashTable {
 private:
-    static const int table_size = 1000;
+    static const int table_size = 10;
     
     struct node {
         string first_name;
@@ -52,9 +52,11 @@ public:
             hash += (int)key[i];
         }
         
-        cout << "hash = " << hash << endl;
+        //cout << "hash = " << hash << endl;
         
-        bucket = hash % 100;
+        bucket = hash % 10;
+        
+//        cout << " bucket = " << bucket << endl;
         
         return bucket;
     }
@@ -63,7 +65,8 @@ public:
         // bucket hold location in hash table where i can store the name
         // calls hash function to assign it a location
         int bucket = Hash(first_name);
-        // cout << "b: " <<bucket;
+//        cout << last_name << "\n";
+//         cout << "b: " <<bucket;
         // if hashtable is empty at index bucket, assign the arguements there
         if(table[bucket]->first_name == "empty") {
             table[bucket]->first_name = first_name;
@@ -78,8 +81,10 @@ public:
             
             // get a walker at the top bucket of the HashTable
             node* walker = table[bucket];
+//            cout << " - Chaining " << last_name << " to " << walker->last_name << endl;
             // traverse walker down the HashTable
-            while (walker!=nullptr) {
+            while (walker->next!=nullptr) {
+//                cout << walker->last_name << " ";
                 walker = walker->next;
             }
             // "chain" the new_node to the end of the linked list
@@ -111,10 +116,19 @@ public:
         
         for (int i = 0; i < table_size; i ++) {
             chainedNums = countItemsInBucket(i);
-            cout << "----------------------\n";
-            cout << table[i]->first_name << endl;
-            cout << table[i]->last_name << endl;
-            cout << "----------------------\n";
+            cout << i << ". ";
+            //cout << chainedNums << endl;
+            if (chainedNums != 1 && chainedNums != 0) {
+//                cout << "django chained\n";
+                node* walker = table[i];
+                while(walker != nullptr) {
+                    cout << walker->first_name << " " << walker->last_name << ", ";
+                    walker = walker->next;
+                }
+            } else {
+                cout << table[i]->first_name << " " << table[i]->last_name;
+            }
+            cout << endl;
         }
     }
 };
